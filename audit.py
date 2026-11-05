@@ -98,18 +98,6 @@ def audit_pod_spec(namespace: str, kind: str, name: str, pod_spec: dict[str, Any
                     "securityContext.privileged is true",
                 )
             )
-        if security_context.get("allowPrivilegeEscalation") is True:
-            findings.append(
-                Finding(
-                    namespace,
-                    kind,
-                    name,
-                    cname,
-                    "privilege-escalation-allowed",
-                    HIGH,
-                    "securityContext.allowPrivilegeEscalation is true",
-                )
-            )
 
         resources = container.get("resources", {}) or {}
         limits = resources.get("limits", {}) or {}

@@ -30,7 +30,6 @@ tool never mutates anything: no patches, no deletes, no annotations.
 | Rule | Severity | Trigger |
 |---|---|---|
 | `privileged-container` | HIGH | `securityContext.privileged: true` |
-| `privilege-escalation-allowed` | HIGH | `securityContext.allowPrivilegeEscalation: true` |
 | `host-path-volume` | HIGH | any pod volume with a `hostPath` |
 | `missing-resource-limits` | MEDIUM | a container missing any of `limits.cpu`, `limits.memory`, `requests.cpu`, `requests.memory` |
 
@@ -76,7 +75,7 @@ python audit.py examples
   it needs nothing else.
 - No secrets are read, logged, or required. Manifest `Secret` resources
   themselves are not a target kind and are ignored by the parser.
-- Treat the generated report as containing cluster topology (namespace and
+- Treat the output report as containing cluster topology (namespace and
   workload names) — handle it with the same sensitivity as `kubectl get
   pods -A` output.
 
