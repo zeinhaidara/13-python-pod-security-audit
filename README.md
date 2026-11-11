@@ -1,4 +1,4 @@
-# pod-security-audit
+# Pod security audit CLI
 
 A read-only Python CLI that audits Kubernetes pod specs for three common
 compliance risks — privileged containers, `hostPath` volume mounts, and
@@ -85,7 +85,7 @@ Pure read + report: running the tool any number of times against the same
 input produces the same findings and has zero side effects on the cluster
 or the manifest files.
 
-## Tests
+## Validation
 
 ```bash
 pip install -r requirements-test.txt
