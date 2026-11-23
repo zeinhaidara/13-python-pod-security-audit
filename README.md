@@ -5,6 +5,11 @@ compliance risks — privileged containers, `hostPath` volume mounts, and
 containers missing resource limits/requests — and prints a pass/fail
 compliance report.
 
+Why it matters: a privileged container or a `hostPath` mount gives a pod a
+path onto the node, and a container without limits can starve its
+neighbours. These are easy to miss in review and easy to catch in a file
+check before anything is deployed.
+
 **Scope.** The default and tested mode reads static manifest files from a
 directory (plain YAML, Helm/Kustomize output, or anything `kubectl` would
 accept). An optional `--live` mode can query a real cluster via the
@@ -49,9 +54,9 @@ python audit.py ./examples
 python audit.py ./examples --format json
 
 # CI gate: exit 1 only when there's a HIGH-severity finding (the default)
-python audit.py ./manifests --fail-on high
-python audit.py ./manifests --fail-on any     # fail on MEDIUM too
-python audit.py ./manifests --fail-on never   # report only, always exit 0
+python audit.py ./examples --fail-on high
+python audit.py ./examples --fail-on any     # fail on MEDIUM too
+python audit.py ./examples --fail-on never   # report only, always exit 0
 
 # Optional: audit a live cluster instead of files (needs kubeconfig / in-cluster creds)
 python audit.py --live
@@ -94,3 +99,12 @@ python -m unittest discover -s tests
 
 Tests run entirely against the fixtures in `examples/` and inline YAML
 strings — no cluster or network access required.
+
+## Known limitations
+
+- Only three rules. Other risky settings (host network, added
+  capabilities, `runAsNonRoot`) are not checked.
+- The `--live` path has never been run against a real cluster and is not
+  covered by tests.
+- Manifests must already be rendered; Helm charts and Kustomize overlays
+  have to be built to YAML first.
